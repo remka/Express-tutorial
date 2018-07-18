@@ -1,0 +1,79 @@
+<%- contentFor('content') %>
+
+<h1>
+  <%= title %>
+  <span class="title-subinfo float-right"><%= result.total %> users</span>
+</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Verified</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for (var i = 0; i < result.docs.length; i++) { %>
+    <tr id="user-<%= result.docs[i]._id %>">
+      <td><%= result.docs[i]._id %></td>
+      <td><%= result.docs[i].username %></td>
+      <td><%= result.docs[i].email %></td>
+      <td>
+        <% if (result.docs[i].verified) { %>
+          <i class="material-icons">check</i>
+        <% } else { %>
+          <i class="material-icons">close</i>
+        <% } %>
+      </td>
+      <td>
+        <a href="/admin/user/<%= result.docs[i]._id %>" title="View user with _id <%= result.docs[i]._id %>"><i class="material-icons">laptop</i></a>
+        <a href="/admin/user/edit/<%= result.docs[i]._id %>" title="Edit user with _id <%= result.docs[i]._id %>"><i class="material-icons">create</i></a>
+        <a href="/admin/user/delete/<%= result.docs[i]._id %>" title="Delete user with _id <%= result.docs[i]._id %>"><i class="material-icons">delete</i></a>
+      </td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<% if (result.pages > 1) { %>
+<nav aria-label="User page navigation">
+  <ul class="pagination justify-content-center">
+    <% if (result.page == 1) { %>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">Previous</a>
+      </li>
+    <% } else { %>
+      <li class="page-item">
+        <a class="page-link" href="/admin/users?page=<%= result.page - 1 %>" tabindex="-1">Previous</a>
+      </li>
+    <% } %>
+    <% if (result.page > maxLinks + 1) { %>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">...</a>
+      </li>
+    <% } %>
+    <% for (var i = 0; i < result.pages; i++) { %>
+      <% if (i + 1 >= result.page - maxLinks && i + 1 <= result.page + maxLinks) { %>
+        <li class="page-item <% if (result.page == i + 1 ) { %>disabled<% } %>"><a class="page-link" href="/admin/users?page=<%= i + 1 %>"><%= i + 1 %></a></li>
+      <% } %>
+    <% } %>
+    <% if (result.page < result.pages - maxLinks) { %>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">...</a>
+      </li>
+    <% } %>
+    <% if (result.page == result.pages) { %>
+      <li class="page-item disabled">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    <% } else { %>
+      <li class="page-item">
+        <a class="page-link" href="/admin/users?page=<%= result.page + 1 %>">Next</a>
+      </li>
+    <% } %>
+  </ul>
+</nav>
+<% } %>
