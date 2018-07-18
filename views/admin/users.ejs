@@ -8,7 +8,6 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>#</th>
       <th>Username</th>
       <th>Email</th>
       <th>Verified</th>
@@ -18,7 +17,6 @@
   <tbody>
     <% for (var i = 0; i < result.docs.length; i++) { %>
     <tr id="user-<%= result.docs[i]._id %>">
-      <td><%= result.docs[i]._id %></td>
       <td><%= result.docs[i].username %></td>
       <td><%= result.docs[i].email %></td>
       <td>
@@ -29,9 +27,9 @@
         <% } %>
       </td>
       <td>
-        <a href="/admin/user/<%= result.docs[i]._id %>" title="View user with _id <%= result.docs[i]._id %>"><i class="material-icons">laptop</i></a>
-        <a href="/admin/user/edit/<%= result.docs[i]._id %>" title="Edit user with _id <%= result.docs[i]._id %>"><i class="material-icons">create</i></a>
-        <a href="/admin/user/delete/<%= result.docs[i]._id %>" title="Delete user with _id <%= result.docs[i]._id %>"><i class="material-icons">delete</i></a>
+        <a href="/admin/user/<%= result.docs[i]._id %>" title="View user with _id <%= result.docs[i]._id %>"><i class="far fa-eye"></i></a>
+        <a href="/admin/user/edit/<%= result.docs[i]._id %>" title="Edit user with _id <%= result.docs[i]._id %>"><i class="fas fa-edit"></i></a>
+        <a href="/admin/user/delete/<%= result.docs[i]._id %>" title="Delete user with _id <%= result.docs[i]._id %>"><i class="fas fa-trash"></i></a>
       </td>
     </tr>
     <% } %>
