@@ -5,7 +5,6 @@ var faker = require('faker');
 var Token = require('../models/token');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
-var config = require('../config/secret');
 
 // dashboard
 exports.dashboardGet = function(req, res) {

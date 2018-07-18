@@ -3,7 +3,6 @@ var User = require('../models/user');
 var Token = require('../models/token');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
-var config = require('../config/secret');
 
 // https://codemoto.io/coding/nodejs/email-verification-node-express-mongodb
 
@@ -52,11 +51,11 @@ exports.postUsers = function(req, res) {
             token.save(function (err) {
               if (err) { return res.status(500).send({ msg: err.message }); }
               var transporter = nodemailer.createTransport({
-                host: config.mailHost,
-                port: config.mailPort,
+                host: process.env.MAIL_HOST,
+                port: process.env.MAIL_PORT,
                 auth: {
-                  user: config.mailAuth.user,
-                  pass: config.mailAuth.pass
+                  user: process.env.MAIL_USERNAME,
+                  pass: process.env.MAIL_PASSWORD
                 }
               });
               var mailOptions = {

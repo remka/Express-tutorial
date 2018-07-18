@@ -6,19 +6,18 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var validator = require('express-validator');
 var expressLayouts = require('express-ejs-layouts');
+require('dotenv').config();
 
 // Routes
 var routesApi = require('./routes/api');
 var routesAuth = require('./routes/auth');
 var routesAdmin = require('./routes/admin');
-// Config
-var config = require('./config/secret');
 
 // Use environment defined port or 3000
 var port = process.env.PORT || 3000;
 
 // Connect to the beerlocker MongoDB
-mongoose.connect(config.mongoUrl, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 
 // Create our Express application
 var app = express();
