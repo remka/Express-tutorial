@@ -27,6 +27,14 @@ exports.getAllBeers = function(req, res) {
 };
 */
 
+exports.getNewUser = function(req, res) {
+  res.render('admin/newuser', {
+    layout: 'layouts/admin',
+    title: 'Create a new user',
+    nav: 'newuser'
+  });
+};
+
 exports.generateFakelUsers = function(req, res, next) {
   // default is 10 users
   var qtt = 10;

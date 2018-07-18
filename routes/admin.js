@@ -12,6 +12,9 @@ router.route('/')
 router.route('/users/')
   .get(adminController.getAllUsers);
 
+router.route('/newuser')
+  .get(adminController.getNewUser);
+
 router.route('/users/fake')
   .get(adminController.generateFakelUsers);
 

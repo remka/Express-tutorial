@@ -1,5 +1,12 @@
 <%- contentFor('content') %>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Users</li>
+  </ol>
+</nav>
+
 <h1>
   <%= title %>
   <span class="title-subinfo float-right"><%= result.total %> users</span>
@@ -21,9 +28,9 @@
       <td><%= result.docs[i].email %></td>
       <td>
         <% if (result.docs[i].verified) { %>
-          <i class="material-icons">check</i>
+          <i class="fas fa-thumbs-up"></i>
         <% } else { %>
-          <i class="material-icons">close</i>
+          <i class="fas fa-thumbs-down"></i>
         <% } %>
       </td>
       <td>
