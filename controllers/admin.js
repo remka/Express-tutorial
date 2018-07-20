@@ -63,8 +63,74 @@ exports.postNewUser = function(req, res) {
     req.flash('form', req.body);
     res.redirect('/admin/newuser');
   } else {
-    req.flash('success', 'The user has been added to the database.');
-    res.redirect('/admin/newuser');
+    // now check if username mailExists
+    var mailExists = User.findOne({ email: req.body.inputEmail }, function (errors, usermail) {
+      if (errors) { return res.status(500).send(errors); }
+      if (usermail !== null) {
+        req.flash('errors', { msg: 'The email address you have entered is already associated with another account.' });
+        req.flash('form', req.body);
+        res.redirect('/admin/newuser');
+      } else {
+        var userExists = User.findOne({ username: req.body.username }, function (errors, username) {
+          if (errors) { return res.status(500).send(errors); }
+          if (username !== null) {
+            req.flash('errors', { msg: 'The username you have entered is already associated with another account.' });
+            req.flash('form', req.body);
+            res.redirect('/admin/newuser');
+          } else {
+            // now save the user
+
+            if (req.body.isApproved == 'on') {
+              // user is pre-approved
+              var user = new User({
+                username: req.body.inputUsername,
+                email: req.body.inputEmail,
+                password: req.body.inputPassword,
+                isVerified: true
+              });
+              user.save(function(err) {
+                if (err) { return res.status(500).send({ msg: err.message }); }
+                req.flash('success', 'The user has been added to the database and approved.');
+                res.redirect('/admin/newuser');
+              });
+            } else {
+              // user is not pre-approved
+              var user = new User({
+                username: req.body.inputUsername,
+                email: req.body.inputEmail,
+                password: req.body.inputPassword
+              });
+              user.save(function(err) {
+                if (err) { return res.status(500).send({ msg: err.message }); }
+                var token = new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') });
+                token.save(function (err) {
+                  if (err) { return res.status(500).send({ msg: err.message }); }
+                  var transporter = nodemailer.createTransport({
+                    host: process.env.MAIL_HOST,
+                    port: process.env.MAIL_PORT,
+                    auth: {
+                      user: process.env.MAIL_USERNAME,
+                      pass: process.env.MAIL_PASSWORD
+                    }
+                  });
+                  var mailOptions = {
+                    from: 'no-reply@yourwebapplication.com',
+                    to: user.email,
+                    subject: 'Account Verification Token',
+                    text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/auth\/confirmation\/' + token.token + '.\n'
+                  };
+                  transporter.sendMail(mailOptions, function (err) {
+                    if (err) { return res.status(500).send({ msg: err.message }); }
+                    req.flash('success', 'The user has been added to the database. A mail has been sent with a verification link.');
+                    res.redirect('/admin/newuser');
+                  });
+                });
+              });
+            }
+          }
+        });
+      }
+    });
   }
 };
 

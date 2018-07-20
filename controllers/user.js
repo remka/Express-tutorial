@@ -10,10 +10,10 @@ exports.postUsers = function(req, res) {
 
   //  Validation rules
   req.checkBody('email', 'Enter a valid email address.').isEmail().normalizeEmail();
-  req.checkBody('username', 'Username must not be empty').not().isEmpty()
+  req.checkBody('username', 'Username must not be empty').notEmpty()
     .trim()
     .escape();
-  req.checkBody('password', 'Password must not be empty').not().isEmpty()
+  req.checkBody('password', 'Password must not be empty').notEmpty()
     .trim()
     .escape();
 
