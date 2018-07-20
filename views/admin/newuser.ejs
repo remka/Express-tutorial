@@ -10,31 +10,39 @@
 
 <h1><%= title %></h1>
 
-<%if (errors) { %>
-  Do something with more than 1 recipe
+<% if ( flashErrors.length > 0 ) { %>
+  <div class="alert alert-danger" role="alert">
+    <% for(var i=0; i < flashErrors.length; i++) {%>
+      <%= flashErrors[i].msg %> <br />
+    <% } %>
+  </div>
 <% } %>
 
-{{# if errors }}
-    {{# each errors }}
-          <p class="alert alert-danger">{{ this.msg }}</p>
-    {{/each}}
-{{/if}}
+<% if ( flashSuccess.length > 0 ) { %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Woohoo!</strong> <%= flashSuccess %>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %>
 
 <form action="" method="POST" class="">
   <div class="form-group">
     <label for="inputEmail">Email address</label>
-    <input type="email" class="form-control" id="inputEmail" name="inputEmail" aria-describedby="Email input" placeholder="Enter email">
+    <input type="email" class="form-control" id="inputEmail" name="inputEmail" aria-describedby="Email input" placeholder="Enter email" value="<% if ( typeof form !== 'undefined') { %><%= form.inputEmail %><% } %>">
   </div>
   <div class="form-group">
     <label for="inputUsername">Username</label>
-    <input type="text" class="form-control" id="inputUsername" name="inputUsername" aria-describedby="Username input" placeholder="Enter username">
+    <input type="text" class="form-control" id="inputUsername" name="inputUsername" aria-describedby="Username input" placeholder="Enter username" value="<% if ( typeof form !== 'undefined') { %><%= form.inputUsername %><% } %>">
   </div>
   <div class="form-group">
     <label for="inputPassword">Password</label>
     <input type="password" class="form-control" id="inputPassword" name="inputPassword" aria-describedby="Password input" placeholder="Password">
+    <small id="emailHelp" class="form-text text-muted">Password is encrypted, so note it somewhere or remember it.</small>
   </div>
   <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="isApproved" name="isApproved">
+    <input type="checkbox" class="form-check-input" id="isApproved" name="isApproved" <% if ( typeof form !== 'undefined' && form.isApproved == 'on') { %>checked<% } %> >
     <label class="form-check-label" for="isApproved">User is approved</label>
   </div>
   <button type="submit" class="btn btn-primary btn-lg">Create new user</button>

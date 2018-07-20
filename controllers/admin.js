@@ -31,8 +31,9 @@ exports.getNewUser = function(req, res) {
   res.render('admin/newuser', {
     layout: 'layouts/admin',
     title: 'Create a new user',
-    success: req.session.success,
-    errors: req.session.errors,
+    flashErrors: req.flash('errors'),
+    flashSuccess: req.flash('success'),
+    form: req.flash('form')[0],
     nav: 'newuser'
   });
   req.session.errors = null;
@@ -51,18 +52,18 @@ exports.postNewUser = function(req, res) {
   req.checkBody('inputUsername', 'Username must not be empty').notEmpty()
     .trim()
     .escape();
-  req.checkBody('inputPassword', 'Password must not be empty').notEmpty()
+  req.checkBody('inputPassword', 'Password must not be empty.').notEmpty()
     .trim()
     .escape();
 
   var errors = req.validationErrors();
 
   if (errors) {
-    req.session.errors = errors;
-    req.session.success = false;
+    req.flash('errors', errors);
+    req.flash('form', req.body);
     res.redirect('/admin/newuser');
   } else {
-    req.session.success = true;
+    req.flash('success', 'The user has been added to the database.');
     res.redirect('/admin/newuser');
   }
 };

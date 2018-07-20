@@ -25,6 +25,7 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 
 // Create our Express application
 var app = express();
+var sessionStore = new session.MemoryStore;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,13 +34,22 @@ app.set('view engine', 'ejs');
 // public folder for CSS, etc.
 app.use(express.static(__dirname + '/public'));
 
+app.use(cookieParser('MVrU0Amy41IlWR0knL6uQtVAopiKqUiAhxcSBR6t'));
+app.use(session({
+    cookie: { maxAge: 60000 },
+    store: sessionStore,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'qonhay83Z3yOl3XRwwzhLxYrnY6J2d46sP0DIvsg'
+}));
+app.use(flash());
+
 app.use(expressLayouts);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(validator());
-app.use(flash());
 
 // Register all our routes with /api
 app.use('/api', routesApi);
