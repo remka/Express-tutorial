@@ -1,11 +1,14 @@
 // Get the packages we need
 var express = require('express');
+
 var mongoose = require('mongoose');
 var path = require('path');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var validator = require('express-validator');
 var expressLayouts = require('express-ejs-layouts');
+var session = require('express-session');
+
 require('dotenv').config();
 
 // Routes
@@ -35,6 +38,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(validator());
+app.use(session({secret: 'dDCRTvXyucam2gUReRjAnogj0ez3YxVtogqgSbxU7HhpkvkvAtvLnUS10twL', saveUninitialized: false, resave: false}));
 
 // Register all our routes with /api
 app.use('/api', routesApi);

@@ -31,8 +31,40 @@ exports.getNewUser = function(req, res) {
   res.render('admin/newuser', {
     layout: 'layouts/admin',
     title: 'Create a new user',
+    success: req.session.success,
+    errors: req.session.errors,
     nav: 'newuser'
   });
+  req.session.errors = null;
+};
+
+exports.postNewUser = function(req, res) {
+
+  //  Validation rules
+
+  var email = req.body.inputEmail;
+  var username = req.body.inputUsername;
+  var password = req.body.inputPassword;
+  var isApproved = req.body.isApproved;
+
+  req.checkBody('inputEmail', 'Enter a valid email address.').isEmail().normalizeEmail();
+  req.checkBody('inputUsername', 'Username must not be empty').notEmpty()
+    .trim()
+    .escape();
+  req.checkBody('inputPassword', 'Password must not be empty').notEmpty()
+    .trim()
+    .escape();
+
+  var errors = req.validationErrors();
+
+  if (errors) {
+    req.session.errors = errors;
+    req.session.success = false;
+    res.redirect('/admin/newuser');
+  } else {
+    req.session.success = true;
+    res.redirect('/admin/newuser');
+  }
 };
 
 exports.generateFakelUsers = function(req, res, next) {

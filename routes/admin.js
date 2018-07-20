@@ -13,7 +13,8 @@ router.route('/users/')
   .get(adminController.getAllUsers);
 
 router.route('/newuser')
-  .get(adminController.getNewUser);
+  .get(adminController.getNewUser)
+  .post(adminController.postNewUser);
 
 router.route('/users/fake')
   .get(adminController.generateFakelUsers);
