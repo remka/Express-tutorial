@@ -1,11 +1,15 @@
 // Get the packages we need
 var express = require('express');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var flash = require('express-flash');
 var mongoose = require('mongoose');
 var path = require('path');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var validator = require('express-validator');
 var expressLayouts = require('express-ejs-layouts');
+
 require('dotenv').config();
 
 // Routes
@@ -35,6 +39,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(validator());
+app.use(flash());
 
 // Register all our routes with /api
 app.use('/api', routesApi);
