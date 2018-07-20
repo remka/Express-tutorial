@@ -9,7 +9,10 @@
 
 <h1>
   <%= title %>
-  <span class="title-subinfo float-right"><%= result.total %> users</span>
+  <span class="title-subinfo float-right">
+    <!-- <%= result.total %> users -->
+    <a class="btn btn-primary" href="/admin/newuser" role="button">Create new user</a>
+  </span>
 </h1>
 
 <table class="table table-striped">
